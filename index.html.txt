@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2026</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        canvas { position: absolute; top: 0; left: 0; }
+
+        .card {
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 20px #ffd700;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 { color: #ffd700; font-size: 2.5em; margin-bottom: 10px; }
+        
+        .odia-text {
+            color: #00ffcc;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .sender-name {
+            font-size: 1.8em;
+            color: #ff3e3e;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .input-group { margin-top: 30px; border-top: 1px solid #444; padding-top: 20px; }
+        
+        input {
+            padding: 10px;
+            width: 80%;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #ffd700;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .footer-credit {
+            margin-top: 25px;
+            font-size: 0.8em;
+            color: #888;
+        }
+
+        #link-display {
+            display: none;
+            word-break: break-all;
+            background: #222;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 0.7em;
+            color: #00ffcc;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="fireworks"></canvas>
+
+    <div class="card">
+        <h1 id="main-wish">Happy New Year 2026!</h1>
+        <span class="odia-text">???? ????? ???? ???? ????????!</span>
+        
+        <p class="sender-name" id="name-display">Biswajit</p>
+        <p>Wishing you a year full of joy and success!</p>
+
+        <div class="input-group">
+            <p style="font-size: 0.9em;">Create your own link:</p>
+            <input type="text" id="user-input" placeholder="Enter Your Name">
+            <button onclick="createLink()">Generate & Copy</button>
+            <div id="link-display"></div>
+        </div>
+
+        <div class="footer-credit">
+            Website Created by <b>Biswajit</b>
+        </div>
+    </div>
+
+    <script>
+        // 1. Logic to show the name from URL
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('n');
+        if (name) {
+            document.getElementById('name-display').innerText = name;
+            document.getElementById('main-wish').innerText = name + " is wishing you!";
+        }
+
+        // 2. Link generation logic
+        function createLink() {
+            const inputName = document.getElementById('user-input').value;
+            if (inputName) {
+                const baseUrl = window.location.href.split('?')[0];
+                const finalUrl = baseUrl + "?n=" + encodeURIComponent(inputName);
+                const display = document.getElementById('link-display');
+                display.style.display = "block";
+                display.innerText = finalUrl;
+                
+                navigator.clipboard.writeText(finalUrl);
+                alert("Link Copied! Send it to your friends.");
+            }
+        }
+
+        // 3. Simple Firework Effect
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function drawFirework() {
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            for(let i=0; i<5; i++) {
+                ctx.fillStyle = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                ctx.beginPath();
+                ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            requestAnimationFrame(drawFirework);
+        }
+        drawFirework();
+    </script>
+</body>
+</html>
